@@ -72,4 +72,6 @@
   };
 </script>
 
-<style></style>
+<style>
+  @import './assets/custom.css';
+</style>
