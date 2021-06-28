@@ -16,6 +16,51 @@
         class="card rounded-10 my-3 shadow-lg back-card overflow-hidden"
         v-if="visible"
       >
+        <div>
+          <div icon="sunny" v-if="clearSky">
+            <span class="sun"></span>
+          </div>
+
+          <div icon="snowy" v-if="snowy">
+            <ul>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+          </div>
+
+          <div icon="stormy" v-if="stormy">
+            <span class="cloud"></span>
+            <ul>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+          </div>
+
+          <div icon="cloudy" v-if="cloudy">
+            <span class="cloud"></span>
+            <span class="cloud"></span>
+          </div>
+
+          <div icon="nightmoon" v-if="clearNight">
+            <span class="moon"></span>
+            <span class="meteor"></span>
+          </div>
+        </div>
+
         <!-- Top of card starts here -->
         <div class="card-top text-center" style="margin-bottom: 15rem">
           <div class="city-name my-3">
@@ -27,7 +72,7 @@
         <!-- top of card ends here -->
 
         <!-- card middle body -->
-        <div class="card-body">
+        <div class="card-body tempContainer">
           <!--card middle starts here -->
           <div class="card-mid">
             <div class="row">
@@ -77,6 +122,13 @@
         visible: false,
         isDay: true,
         citySearch: '',
+
+        stormy: false,
+        cloudy: false,
+        clearSky: false,
+        clearNight: false,
+        snowy: false,
+
         weather: {
           cityName: 'Vientiane',
           country: 'LAOS',
@@ -96,6 +148,7 @@
 
         const response = await fetch(baseURL);
         const data = await response.json();
+        console.log(data);
 
         const { name, sys, main, weather } = data;
         const {
@@ -120,8 +173,18 @@
         const timeOfDay = data.weather[0].icon;
         this.isDay = !timeOfDay.includes('n');
 
-        // check weather animation
+        // show weather card when enter city
         this.visible = true;
+
+        // check weather animation
+        const mainWeather = weather[0].main;
+
+        this.stormy =
+          mainWeather.includes('Thunderstorm') || mainWeather.includes('Rain');
+        this.cloudy = mainWeather.includes('Clouds');
+        this.clearSky = mainWeather.includes('Clear') && this.isDay;
+        this.clearNight = mainWeather.includes('Clear') && !this.isDay;
+        this.snowy = mainWeather.includes('Snow');
       },
     },
   };
@@ -129,4 +192,5 @@
 
 <style>
   @import './assets/custom.css';
+  @import './assets/animation.css';
 </style>
