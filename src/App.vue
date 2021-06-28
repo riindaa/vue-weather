@@ -92,15 +92,24 @@
         const response = await fetch(baseURL);
         const data = await response.json();
 
+        const { name, sys, main, weather } = data;
+        const {
+          temp,
+          temp_min: tempMin,
+          temp_max: tempMax,
+          feels_like: feelsLike,
+          humidity,
+        } = main;
+
         this.citySearch = '';
-        this.weather.cityName = data.name;
-        this.weather.country = data.sys.country;
-        this.weather.temperature = Math.round(data.main.temp);
-        this.weather.description = data.weather[0].description;
-        this.weather.lowTemp = Math.round(data.main.temp_min);
-        this.weather.highTemp = Math.round(data.main.temp_max);
-        this.weather.feelsLike = Math.round(data.main.feels_like);
-        this.weather.humidity = Math.round(data.main.humidity);
+        this.weather.cityName = name;
+        this.weather.country = sys.country;
+        this.weather.description = weather[0].description;
+        this.weather.temperature = Math.round(temp);
+        this.weather.lowTemp = Math.round(tempMin);
+        this.weather.highTemp = Math.round(tempMax);
+        this.weather.feelsLike = Math.round(feelsLike);
+        this.weather.humidity = Math.round(humidity);
       },
     },
   };
