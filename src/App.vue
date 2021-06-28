@@ -91,7 +91,7 @@
     },
     methods: {
       async getWeather() {
-        const key = 'a4eedb161bb17445342e96edc3f052ef';
+        const key = process.env.VUE_APP_OPENWEATHER_API_KEY;
         const baseURL = `https://api.openweathermap.org/data/2.5/weather?q=${this.citySearch}&units=metric&appid=${key}`;
 
         const response = await fetch(baseURL);
