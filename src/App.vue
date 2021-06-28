@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="main" v-bind:class="isDay ? 'day' : 'night'">
     <div class="container my-5">
       <h1 class="title text-center">Weather in</h1>
       <form class="seach-location" v-on:submit.prevent="getWeather">
@@ -71,6 +71,7 @@
   export default {
     data() {
       return {
+        isDay: true,
         citySearch: '',
         weather: {
           cityName: 'Vientiane',
@@ -110,6 +111,11 @@
         this.weather.highTemp = Math.round(tempMax);
         this.weather.feelsLike = Math.round(feelsLike);
         this.weather.humidity = Math.round(humidity);
+
+        // check for time of day
+        const timeOfDay = data.weather[0].icon;
+
+        this.isDay = !timeOfDay.includes('n');
       },
     },
   };
