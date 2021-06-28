@@ -12,6 +12,8 @@
         />
       </form>
 
+      <p class="text-center my-3" v-if="cityNotFound">No city found</p>
+
       <div
         class="card rounded-10 my-3 shadow-lg back-card overflow-hidden"
         v-if="visible"
@@ -122,6 +124,7 @@
         visible: false,
         isDay: true,
         citySearch: '',
+        cityNotFound: false,
 
         stormy: false,
         cloudy: false,
@@ -143,48 +146,63 @@
     },
     methods: {
       async getWeather() {
+        if (!this.citySearch) {
+          return;
+        }
+
         const key = process.env.VUE_APP_OPENWEATHER_API_KEY;
         const baseURL = `https://api.openweathermap.org/data/2.5/weather?q=${this.citySearch}&units=metric&appid=${key}`;
 
-        const response = await fetch(baseURL);
-        const data = await response.json();
-        console.log(data);
+        // fetch weather
+        try {
+          const response = await fetch(baseURL);
+          const data = await response.json();
 
-        const { name, sys, main, weather } = data;
-        const {
-          temp,
-          temp_min: tempMin,
-          temp_max: tempMax,
-          feels_like: feelsLike,
-          humidity,
-        } = main;
+          const { name, sys, main, weather } = data;
+          const {
+            temp,
+            temp_min: tempMin,
+            temp_max: tempMax,
+            feels_like: feelsLike,
+            humidity,
+          } = main;
 
-        this.citySearch = '';
-        this.weather.cityName = name;
-        this.weather.country = sys.country;
-        this.weather.description = weather[0].description;
-        this.weather.temperature = Math.round(temp);
-        this.weather.lowTemp = Math.round(tempMin);
-        this.weather.highTemp = Math.round(tempMax);
-        this.weather.feelsLike = Math.round(feelsLike);
-        this.weather.humidity = Math.round(humidity);
+          this.citySearch = '';
+          this.weather.cityName = name;
+          this.weather.country = sys.country;
+          this.weather.description = weather[0].description;
+          this.weather.temperature = Math.round(temp);
+          this.weather.lowTemp = Math.round(tempMin);
+          this.weather.highTemp = Math.round(tempMax);
+          this.weather.feelsLike = Math.round(feelsLike);
+          this.weather.humidity = Math.round(humidity);
 
-        // check for time of day
-        const timeOfDay = data.weather[0].icon;
-        this.isDay = !timeOfDay.includes('n');
+          // check for time of day
+          const timeOfDay = data.weather[0].icon;
+          this.isDay = !timeOfDay.includes('n');
 
-        // show weather card when enter city
-        this.visible = true;
+          // show weather card when enter city
+          this.visible = true;
 
-        // check weather animation
-        const mainWeather = weather[0].main;
+          // check weather animation
+          const mainWeather = weather[0].main;
 
-        this.stormy =
-          mainWeather.includes('Thunderstorm') || mainWeather.includes('Rain');
-        this.cloudy = mainWeather.includes('Clouds');
-        this.clearSky = mainWeather.includes('Clear') && this.isDay;
-        this.clearNight = mainWeather.includes('Clear') && !this.isDay;
-        this.snowy = mainWeather.includes('Snow');
+          this.stormy =
+            mainWeather.includes('Thunderstorm') ||
+            mainWeather.includes('Rain');
+          this.cloudy =
+            mainWeather.includes('Clouds') || mainWeather.includes('Mist');
+          this.clearSky = mainWeather.includes('Clear') && this.isDay;
+          this.clearNight = mainWeather.includes('Clear') && !this.isDay;
+          this.snowy = mainWeather.includes('Snow');
+
+          this.cityNotFound = false;
+        } catch (error) {
+          console.log(error);
+          this.cityNotFound = true;
+          this.citySearch = '';
+          this.visible = false;
+        }
       },
     },
   };
