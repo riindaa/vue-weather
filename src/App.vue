@@ -2,12 +2,13 @@
   <div id="main">
     <div class="container my-5">
       <h1 class="title text-center">Weather in</h1>
-      <form class="seach-location">
+      <form class="seach-location" v-on:submit.prevent="getWeather">
         <input
           type="text"
           class="form-control text-muted form-rounded p-4 shadow-sm rounded-pill"
           placeholder="What City?"
           autocomplete="off"
+          v-model="citySearch"
         />
       </form>
 
@@ -70,6 +71,7 @@
   export default {
     data() {
       return {
+        citySearch: '',
         weather: {
           cityName: 'Vientiane',
           country: 'LAOS',
@@ -81,6 +83,25 @@
           humidity: 55,
         },
       };
+    },
+    methods: {
+      async getWeather() {
+        const key = 'a4eedb161bb17445342e96edc3f052ef';
+        const baseURL = `https://api.openweathermap.org/data/2.5/weather?q=${this.citySearch}&units=metric&appid=${key}`;
+
+        const response = await fetch(baseURL);
+        const data = await response.json();
+
+        this.citySearch = '';
+        this.weather.cityName = data.name;
+        this.weather.country = data.sys.country;
+        this.weather.temperature = Math.round(data.main.temp);
+        this.weather.description = data.weather[0].description;
+        this.weather.lowTemp = Math.round(data.main.temp_min);
+        this.weather.highTemp = Math.round(data.main.temp_max);
+        this.weather.feelsLike = Math.round(data.main.feels_like);
+        this.weather.humidity = Math.round(data.main.humidity);
+      },
     },
   };
 </script>
