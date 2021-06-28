@@ -12,7 +12,10 @@
         />
       </form>
 
-      <div class="card rounded-10 my-3 shadow-lg back-card overflow-hidden">
+      <div
+        class="card rounded-10 my-3 shadow-lg back-card overflow-hidden"
+        v-if="visible"
+      >
         <!-- Top of card starts here -->
         <div class="card-top text-center" style="margin-bottom: 15rem">
           <div class="city-name my-3">
@@ -71,6 +74,7 @@
   export default {
     data() {
       return {
+        visible: false,
         isDay: true,
         citySearch: '',
         weather: {
@@ -114,8 +118,10 @@
 
         // check for time of day
         const timeOfDay = data.weather[0].icon;
-
         this.isDay = !timeOfDay.includes('n');
+
+        // check weather animation
+        this.visible = true;
       },
     },
   };
