@@ -2,15 +2,11 @@
   <div id="main" v-bind:class="isDay ? 'day' : 'night'">
     <div class="container my-5">
       <h1 class="title text-center">Weather in</h1>
-      <form class="seach-location" v-on:submit.prevent="getWeather">
-        <input
-          type="text"
-          class="form-control text-muted form-rounded p-4 shadow-sm rounded-pill"
-          placeholder="What City?"
-          autocomplete="off"
-          v-model="citySearch"
-        />
-      </form>
+
+      <search-input
+        placeholderLabel="What City?"
+        @onSubmit="getWeather"
+      ></search-input>
 
       <p class="text-center my-3" v-if="cityNotFound">No city found</p>
 
@@ -136,6 +132,7 @@
 
 <script>
   import WeatherItem from './components/WeatherItem.vue';
+  import SearchInput from './components/SearchInput.vue';
 
   export default {
     data() {
@@ -165,9 +162,12 @@
     },
     components: {
       WeatherItem,
+      SearchInput,
     },
     methods: {
-      async getWeather() {
+      async getWeather(value) {
+        this.citySearch = value;
+
         if (!this.citySearch) {
           return;
         }
