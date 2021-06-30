@@ -76,37 +76,54 @@
         <!-- card middle body -->
         <div class="card-body tempContainer">
           <!--card middle starts here -->
-          <div class="card-mid">
-            <div class="row">
-              <div class="col-12 text-center temp">
-                <span>{{ weather.temperature }}°C</span>
-                <p class="my-4">{{ weather.description }}</p>
+          <div class="row">
+            <weather-item
+              :value="weather.temperature"
+              type="temp"
+              :description="weather.description"
+              size="large"
+            ></weather-item>
+          </div>
+          <div class="row">
+            <div class="col d-flex justify-content-between px-5 mx-5">
+              <div class="d-flex align-items-center">
+                <img src="./assets/down.svg" alt="Down" class="mx-1" />
+                <weather-item
+                  :value="weather.lowTemp"
+                  type="temp"
+                  size="small"
+                ></weather-item>
               </div>
-            </div>
-            <div class="row">
-              <div class="col d-flex justify-content-between px-5 mx-5">
-                <p>
-                  <img src="./assets/down.svg" alt="Down" />
-                  {{ weather.lowTemp }}°C
-                </p>
-                <p>
-                  <img src="./assets/up.svg" alt="Up" />
-                  {{ weather.highTemp }}°C
-                </p>
+              <div class="d-flex align-items-center">
+                <img src="./assets/up.svg" alt="Up" class="mx-1" />
+                <weather-item
+                  :value="weather.highTemp"
+                  type="temp"
+                  size="small"
+                ></weather-item>
               </div>
             </div>
           </div>
           <!-- card middle ends here -->
 
           <!-- card bottom starts here -->
-          <div class="card-bottom px-5 py-4 row">
-            <div class="col text-center">
-              <p>{{ weather.feelsLike }}°C</p>
-              <span>Feels like</span>
+          <div class="px-5 py-4 row">
+            <div class="col">
+              <weather-item
+                :value="weather.feelsLike"
+                type="temp"
+                description="Feels like"
+                size="medium"
+              ></weather-item>
             </div>
-            <div class="col text-center">
-              <p>{{ weather.humidity }}%</p>
-              <span>Humidity</span>
+
+            <div class="col">
+              <weather-item
+                :value="weather.humidity"
+                type="percent"
+                description="Humidity"
+                size="medium"
+              ></weather-item>
             </div>
           </div>
 
@@ -118,6 +135,8 @@
 </template>
 
 <script>
+  import WeatherItem from './components/WeatherItem.vue';
+
   export default {
     data() {
       return {
@@ -143,6 +162,9 @@
           humidity: 55,
         },
       };
+    },
+    components: {
+      WeatherItem,
     },
     methods: {
       async getWeather() {
