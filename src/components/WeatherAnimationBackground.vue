@@ -438,8 +438,8 @@
     top: 20%;
     left: 80%;
     transform: translate(-50%, -50%);
-    width: 25%;
-    height: 20%;
+    width: 150px;
+    height: 130px;
     border-radius: 100%;
     background: radial-gradient(circle at bottom left, var(--ring), #fef07e);
     box-shadow: 0 0 0 0.02em var(--ring) inset, 0 0 0.3em -0.03em var(--blend2);

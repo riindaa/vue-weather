@@ -13,6 +13,7 @@
       <div v-if="visible">
         <weather-card
           :cityName="weather.cityName"
+          :date="currentDate"
           :country="weather.country"
           :temperature="weather.temperature"
           :description="weather.description"
@@ -25,12 +26,12 @@
 
         <div class="daily-cards">
           <weather-daily-card
-            v-for="(daily, index) in dailyList"
+            v-for="(item, index) in dailyList"
             :key="index"
-            :date="daily.dt"
-            :min="Math.round(daily.temp.min)"
-            :max="Math.round(daily.temp.max)"
-            :dailyAnimation="daily.weather[0].main"
+            :date="item.date"
+            :min="item.min"
+            :max="item.max"
+            :dailyAnimation="item.dailyAnimation"
           ></weather-daily-card>
         </div>
       </div>
@@ -40,6 +41,7 @@
 
 <script>
   import axios from 'axios';
+  import moment from 'moment';
 
   import SearchInput from './components/SearchInput.vue';
   import WeatherCard from './components/WeatherCard.vue';
@@ -90,14 +92,20 @@
           const response = await axios.get(baseURL);
           const { data } = response;
 
-          const { name, sys, main, weather, coord } = data;
+          const { name, sys, main, weather, coord, dt } = data;
 
           const dailyURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${coord.lat}&lon=${coord.lon}&units=metric&exclude=current,minutely,hourly,alerts&appid=${key}`;
 
           const responseDailyURL = await axios.get(dailyURL);
-          this.dailyList = responseDailyURL.data.daily;
 
-          console.log(this.dailyList);
+          this.dailyList = responseDailyURL.data.daily
+            .filter((_item, index) => index !== 0)
+            .map((item) => ({
+              date: moment(item.dt * 1000).format('DD/MM'),
+              min: Math.round(item.temp.min),
+              max: Math.round(item.temp.max),
+              dailyAnimation: item.weather[0].main,
+            }));
 
           const {
             temp,
@@ -110,6 +118,7 @@
           // current weather
           this.citySearch = '';
           this.weather.cityName = name;
+          this.currentDate = moment(dt * 1000).format('DD/MM/YYYY');
           this.weather.country = sys.country;
           this.weather.description = weather[0].description;
           this.weather.temperature = Math.round(temp);

@@ -4,10 +4,8 @@
       :type="dailyAnimation"
     ></weather-animation-background>
 
-    <div class="DailyCardContent card-top text-center">
-      <div>{{ date }}</div>
-
-      <span>...</span>
+    <div class="dailyCardContent card-top text-center">
+      <div class="date">{{ date }}</div>
 
       <weather-item
         :value="max"
@@ -71,17 +69,21 @@
     color: white;
     background: linear-gradient(to bottom right, #707070, #434647);
     text-shadow: 2px 2px 2px #707070;
-    width: 250px;
-    min-width: 250px !important;
+    width: 170px;
+    min-width: 170px !important;
     height: 300px;
 
-    .DailyCardContent {
+    .dailyCardContent {
       display: flex;
       flex-direction: column;
       justify-content: space-around;
       padding: 25px;
       z-index: 1;
       height: 100%;
+
+      .date {
+        font-size: 1.3em;
+      }
     }
   }
 </style>

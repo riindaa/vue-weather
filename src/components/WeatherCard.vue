@@ -9,6 +9,7 @@
       <div class="cityName my-3">
         <p>{{ cityName }}</p>
         <span>...</span>
+        <div class="date">{{ date }}</div>
         <p class="">{{ country }}</p>
       </div>
     </div>
@@ -84,6 +85,10 @@
         type: String,
         required: true,
       },
+      date: {
+        type: Number,
+        required: true,
+      },
       country: {
         type: String,
         required: true,
@@ -149,7 +154,7 @@
 
     .cityName p {
       font-weight: 400;
-      font-size: 16pt;
+      font-size: 2em;
     }
 
     .cityName span {
@@ -157,6 +162,10 @@
       top: -50px;
       font-size: 40pt;
       font-family: 'Times New Roman', Times, serif;
+    }
+
+    .date {
+      font-size: 1.5em;
     }
 
     .tempContainer {
