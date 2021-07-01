@@ -52,7 +52,7 @@
     props: {
       type: {
         type: String,
-        require: true,
+        required: true,
         validator(typeValue) {
           return [
             'Thunderstorm',

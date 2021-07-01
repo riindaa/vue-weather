@@ -82,39 +82,39 @@
     props: {
       cityName: {
         type: String,
-        require: true,
+        required: true,
       },
       country: {
         type: String,
-        require: true,
+        required: true,
       },
       temperature: {
         type: Number,
-        require: true,
+        required: true,
       },
       description: {
         type: String,
-        require: true,
+        required: true,
       },
       lowTemp: {
         type: Number,
-        require: true,
+        required: true,
       },
       highTemp: {
         type: Number,
-        require: true,
+        required: true,
       },
       feelsLike: {
         type: Number,
-        require: true,
+        required: true,
       },
       humidity: {
         type: Number,
-        require: true,
+        required: true,
       },
       weatherAnimation: {
         type: String,
-        require: true,
+        required: true,
         validator(weatherAnimationValue) {
           return [
             'Thunderstorm',

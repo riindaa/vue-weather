@@ -12,21 +12,21 @@
     props: {
       value: {
         type: Number,
-        require: true,
+        required: true,
       },
       description: {
         type: String,
       },
       type: {
         type: String,
-        require: true,
+        required: true,
         validator(typeValue) {
           return ['temp', 'percent'].includes(typeValue);
         },
       },
       size: {
         type: String,
-        require: true,
+        required: true,
         validator(sizeValue) {
           return ['small', 'medium', 'large'].includes(sizeValue);
         },
