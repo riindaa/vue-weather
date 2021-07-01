@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="SearchInput">
     <form v-on:submit.prevent="onSubmitSearch()">
       <input
         type="text"
@@ -34,4 +34,15 @@
   });
 </script>
 
-<style></style>
+<style lang="scss">
+  .SearchInput {
+    .form-control:focus {
+      box-shadow: none;
+      border-color: inherit;
+    }
+
+    .form-rounded {
+      border-radius: 2rem;
+    }
+  }
+</style>
