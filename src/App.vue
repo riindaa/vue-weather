@@ -121,5 +121,4 @@
 
 <style>
   @import './assets/custom.css';
-  @import './assets/animation.css';
 </style>

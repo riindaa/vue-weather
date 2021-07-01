@@ -1,54 +1,8 @@
 <template>
   <div class="WeatherCard card rounded-10 my-3 shadow-lg overflow-hidden">
-    <div>
-      <div icon="sunny" v-if="weatherAnimation === 'Clear'">
-        <span class="sun"></span>
-      </div>
-
-      <div icon="snowy" v-if="weatherAnimation === 'Snow'">
-        <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div>
-
-      <div
-        icon="stormy"
-        v-if="
-          weatherAnimation === 'Thunderstorm' || weatherAnimation === 'Rain'
-        "
-      >
-        <span class="cloud"></span>
-        <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div>
-
-      <div icon="cloudy" v-if="weatherAnimation === 'Clouds'">
-        <span class="cloud"></span>
-        <span class="cloud"></span>
-      </div>
-
-      <div icon="nightmoon" v-if="weatherAnimation === 'ClearNight'">
-        <span class="moon"></span>
-        <span class="meteor"></span>
-      </div>
-    </div>
+    <weather-animation-background
+      :type="weatherAnimation"
+    ></weather-animation-background>
 
     <!-- Top of card starts here -->
     <div class="card-top text-center" style="margin-bottom: 15rem">
@@ -122,6 +76,7 @@
 <script>
   import { defineComponent } from 'vue';
   import WeatherItem from './WeatherItem.vue';
+  import WeatherAnimationBackground from './WeatherAnimationBackground.vue';
 
   export default defineComponent({
     props: {
@@ -175,6 +130,7 @@
     },
     components: {
       WeatherItem,
+      WeatherAnimationBackground,
     },
   });
 </script>
