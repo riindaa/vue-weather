@@ -28,6 +28,8 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   import SearchInput from './components/SearchInput.vue';
   import WeatherCard from './components/WeatherCard.vue';
 
@@ -70,8 +72,8 @@
 
         // fetch weather
         try {
-          const response = await fetch(baseURL);
-          const data = await response.json();
+          const response = await axios.get(baseURL);
+          const { data } = response;
 
           const { name, sys, main, weather } = data;
           const {
