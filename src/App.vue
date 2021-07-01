@@ -10,129 +10,26 @@
 
       <p class="text-center my-3" v-if="cityNotFound">No city found</p>
 
-      <div
-        class="card rounded-10 my-3 shadow-lg back-card overflow-hidden"
-        v-if="visible"
-      >
-        <div>
-          <div icon="sunny" v-if="clearSky">
-            <span class="sun"></span>
-          </div>
-
-          <div icon="snowy" v-if="snowy">
-            <ul>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-            </ul>
-          </div>
-
-          <div icon="stormy" v-if="stormy">
-            <span class="cloud"></span>
-            <ul>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-            </ul>
-          </div>
-
-          <div icon="cloudy" v-if="cloudy">
-            <span class="cloud"></span>
-            <span class="cloud"></span>
-          </div>
-
-          <div icon="nightmoon" v-if="clearNight">
-            <span class="moon"></span>
-            <span class="meteor"></span>
-          </div>
-        </div>
-
-        <!-- Top of card starts here -->
-        <div class="card-top text-center" style="margin-bottom: 15rem">
-          <div class="city-name my-3">
-            <p>{{ weather.cityName }}</p>
-            <span>...</span>
-            <p class="">{{ weather.country }}</p>
-          </div>
-        </div>
-        <!-- top of card ends here -->
-
-        <!-- card middle body -->
-        <div class="card-body tempContainer">
-          <!--card middle starts here -->
-          <div class="row">
-            <weather-item
-              :value="weather.temperature"
-              type="temp"
-              :description="weather.description"
-              size="large"
-            ></weather-item>
-          </div>
-          <div class="row">
-            <div class="col d-flex justify-content-between px-5 mx-5">
-              <div class="d-flex align-items-center">
-                <img src="./assets/down.svg" alt="Down" class="mx-1" />
-                <weather-item
-                  :value="weather.lowTemp"
-                  type="temp"
-                  size="small"
-                ></weather-item>
-              </div>
-              <div class="d-flex align-items-center">
-                <img src="./assets/up.svg" alt="Up" class="mx-1" />
-                <weather-item
-                  :value="weather.highTemp"
-                  type="temp"
-                  size="small"
-                ></weather-item>
-              </div>
-            </div>
-          </div>
-          <!-- card middle ends here -->
-
-          <!-- card bottom starts here -->
-          <div class="px-5 py-4 row">
-            <div class="col">
-              <weather-item
-                :value="weather.feelsLike"
-                type="temp"
-                description="Feels like"
-                size="medium"
-              ></weather-item>
-            </div>
-
-            <div class="col">
-              <weather-item
-                :value="weather.humidity"
-                type="percent"
-                description="Humidity"
-                size="medium"
-              ></weather-item>
-            </div>
-          </div>
-
-          <!-- card bottom ends here -->
-        </div>
+      <div v-if="visible">
+        <weather-card
+          :cityName="weather.cityName"
+          :country="weather.country"
+          :temperature="weather.temperature"
+          :description="weather.description"
+          :lowTemp="weather.lowTemp"
+          :highTemp="weather.highTemp"
+          :feelsLike="weather.feelsLike"
+          :humidity="weather.humidity"
+          :weatherAnimation="weatherAnimation"
+        ></weather-card>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import WeatherItem from './components/WeatherItem.vue';
   import SearchInput from './components/SearchInput.vue';
+  import WeatherCard from './components/WeatherCard.vue';
 
   export default {
     data() {
@@ -142,11 +39,7 @@
         citySearch: '',
         cityNotFound: false,
 
-        stormy: false,
-        cloudy: false,
-        clearSky: false,
-        clearNight: false,
-        snowy: false,
+        weatherAnimation: 'Clouds',
 
         weather: {
           cityName: 'Vientiane',
@@ -161,8 +54,8 @@
       };
     },
     components: {
-      WeatherItem,
       SearchInput,
+      WeatherCard,
     },
     methods: {
       async getWeather(value) {
@@ -209,14 +102,10 @@
           // check weather animation
           const mainWeather = weather[0].main;
 
-          this.stormy =
-            mainWeather.includes('Thunderstorm') ||
-            mainWeather.includes('Rain');
-          this.cloudy =
-            mainWeather.includes('Clouds') || mainWeather.includes('Mist');
-          this.clearSky = mainWeather.includes('Clear') && this.isDay;
-          this.clearNight = mainWeather.includes('Clear') && !this.isDay;
-          this.snowy = mainWeather.includes('Snow');
+          this.weatherAnimation =
+            mainWeather.includes('Clear') && !this.isDay
+              ? 'ClearNight'
+              : mainWeather;
 
           this.cityNotFound = false;
         } catch (error) {
