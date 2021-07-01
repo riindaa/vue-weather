@@ -1,6 +1,6 @@
 <template>
   <div id="main" v-bind:class="isDay ? 'day' : 'night'">
-    <div class="container my-5">
+    <div class="container">
       <h1 class="title text-center">Weather in</h1>
 
       <search-input
@@ -22,6 +22,17 @@
           :humidity="weather.humidity"
           :weatherAnimation="weatherAnimation"
         ></weather-card>
+
+        <div class="daily-cards">
+          <weather-daily-card
+            v-for="(daily, index) in dailyList"
+            :key="index"
+            :date="daily.dt"
+            :min="Math.round(daily.temp.min)"
+            :max="Math.round(daily.temp.max)"
+            :dailyAnimation="daily.weather[0].main"
+          ></weather-daily-card>
+        </div>
       </div>
     </div>
   </div>
@@ -32,6 +43,7 @@
 
   import SearchInput from './components/SearchInput.vue';
   import WeatherCard from './components/WeatherCard.vue';
+  import WeatherDailyCard from './components/WeatherDailyCard.vue';
 
   export default {
     data() {
@@ -53,11 +65,14 @@
           feelsLike: 20,
           humidity: 55,
         },
+
+        dailyList: [],
       };
     },
     components: {
       SearchInput,
       WeatherCard,
+      WeatherDailyCard,
     },
     methods: {
       async getWeather(value) {
@@ -75,7 +90,15 @@
           const response = await axios.get(baseURL);
           const { data } = response;
 
-          const { name, sys, main, weather } = data;
+          const { name, sys, main, weather, coord } = data;
+
+          const dailyURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${coord.lat}&lon=${coord.lon}&units=metric&exclude=current,minutely,hourly,alerts&appid=${key}`;
+
+          const responseDailyURL = await axios.get(dailyURL);
+          this.dailyList = responseDailyURL.data.daily;
+
+          console.log(this.dailyList);
+
           const {
             temp,
             temp_min: tempMin,
@@ -84,6 +107,7 @@
             humidity,
           } = main;
 
+          // current weather
           this.citySearch = '';
           this.weather.cityName = name;
           this.weather.country = sys.country;
@@ -122,5 +146,28 @@
 </script>
 
 <style>
-  @import './assets/custom.css';
+  #main {
+    height: 100%;
+    width: 100%;
+    min-height: 100vh;
+  }
+  .day {
+    background: linear-gradient(to bottom left, #d7d3ac, #ffffff);
+  }
+  .night {
+    background: linear-gradient(to bottom left, #4854a2, #3d3d3d);
+    color: white;
+  }
+
+  .title {
+    font-size: 50px;
+    font-weight: 500;
+  }
+
+  .daily-cards {
+    display: flex;
+    justify-content: space-around;
+    column-gap: 15px;
+    flex-wrap: wrap;
+  }
 </style>
