@@ -4,6 +4,7 @@
       <h1 class="title text-center">Weather in</h1>
 
       <search-input
+        :defaultValue="query"
         placeholderLabel="What City?"
         @onSubmit="getWeather"
       ></search-input>
@@ -40,6 +41,7 @@
 </template>
 
 <script>
+  import { useRoute } from 'vue-router';
   import axios from 'axios';
   import moment from 'moment';
 
@@ -48,8 +50,18 @@
   import WeatherDailyCard from '../components/WeatherDailyCard.vue';
 
   export default {
+    beforeMount() {
+      const route = useRoute();
+      const { q } = route.query;
+      this.query = q;
+    },
+    mounted() {
+      this.getWeather(this.query);
+    },
     data() {
       return {
+        query: '',
+
         visible: false,
         isDay: true,
         citySearch: '',
@@ -79,6 +91,11 @@
     methods: {
       async getWeather(value) {
         this.citySearch = value;
+
+        this.$router.push({
+          path: window.location.pathname,
+          query: { q: value },
+        });
 
         if (!this.citySearch) {
           return;

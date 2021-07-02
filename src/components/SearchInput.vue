@@ -18,11 +18,14 @@
   export default defineComponent({
     data() {
       return {
-        search: '',
+        search: this.defaultValue,
       };
     },
     props: {
       placeholderLabel: {
+        type: String,
+      },
+      defaultValue: {
         type: String,
       },
     },
