@@ -12,6 +12,10 @@ This project is a weather app created for a technical test using Vue.js.
 - [x] Possibility to add a city in the web browser's favorite
 - [ ] Use Vuex
 
+## Demo
+
+[Click here to see the demo.](http://my-weather-vue.herokuapp.com/)
+
 ## Project setup
 
 ### Set up environment variables
