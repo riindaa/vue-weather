@@ -90,6 +90,11 @@
       WeatherCard,
       WeatherDailyCard,
     },
+    watch: {
+      '$i18n.locale': function() {
+        this.getWeather(this.citySearch);
+      },
+    },
     methods: {
       async getWeather(value) {
         this.citySearch = value;
@@ -104,7 +109,7 @@
         }
 
         const key = process.env.VUE_APP_OPENWEATHER_API_KEY;
-        const baseURL = `https://api.openweathermap.org/data/2.5/weather?q=${this.citySearch}&units=metric&appid=${key}`;
+        const baseURL = `https://api.openweathermap.org/data/2.5/weather?q=${this.citySearch}&lang=${this.$i18n.locale}&units=metric&appid=${key}`;
 
         // fetch weather
         try {
@@ -135,7 +140,6 @@
           } = main;
 
           // current weather
-          this.citySearch = '';
           this.weather.cityName = name;
           this.currentDate = moment(dt * 1000).format('DD/MM/YYYY');
           this.weather.country = sys.country;
