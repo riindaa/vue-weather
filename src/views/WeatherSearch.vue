@@ -1,15 +1,17 @@
 <template>
   <div id="main" v-bind:class="isDay ? 'day' : 'night'">
     <div class="container">
-      <h1 class="title text-center">Weather in</h1>
+      <h1 class="title text-center">{{ $t('message.weatherIn') }}</h1>
 
       <search-input
         :defaultValue="query"
-        placeholderLabel="What City?"
+        :placeholderLabel="$t('message.placeholderLabel')"
         @onSubmit="getWeather"
       ></search-input>
 
-      <p class="text-center my-3" v-if="cityNotFound">No city found</p>
+      <p class="text-center my-3" v-if="cityNotFound">
+        {{ $t('message.findCity') }}
+      </p>
 
       <div v-if="visible">
         <weather-card

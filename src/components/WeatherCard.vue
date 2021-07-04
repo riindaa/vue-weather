@@ -54,7 +54,7 @@
           <weather-item
             :value="feelsLike"
             type="temp"
-            description="Feels like"
+            :description="$t('message.feelsLike')"
             size="medium"
           ></weather-item>
         </div>
@@ -63,7 +63,7 @@
           <weather-item
             :value="humidity"
             type="percent"
-            description="Humidity"
+            :description="$t('message.humidity')"
             size="medium"
           ></weather-item>
         </div>

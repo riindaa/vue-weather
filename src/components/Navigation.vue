@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
-    <router-link to="/">Search your Weather City</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/">{{ $t('message.menuSearchWeather') }}</router-link> |
+    <router-link to="/about">{{ $t('message.menuAbout') }}</router-link>
   </div>
 </template>
 

@@ -1,10 +1,14 @@
 <template>
   <div class="About">
     <div class="container">
-      <h1>App made by S. SIVILAY</h1>
+      <h1>{{ $t('message.about') }}</h1>
     </div>
   </div>
 </template>
+
+<script>
+  export default {};
+</script>
 
 <style lang="scss">
   .About {
